@@ -4,6 +4,7 @@ const session = require('express-session')
 const FileStore = require('session-file-store')(session)
 const flash = require('express-flash')
 const ToughtController = require('./controllers/ToughtController')
+const AuthController = require('./controllers/AuthController')
 const port = 3000
 const app = express()
 
@@ -13,9 +14,11 @@ const Tought = require('./models/Thought')
 const User = require('./models/User')
 //import routes
 const toughtsRoutes = require('./routes/toughtsRoutes')
+const authRoutes = require('./routes/authRoutes')
+
+
 app.engine('handlebars', exphbs.engine())
 app.set('view engine', 'handlebars')
-
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 app.use(express.json())
@@ -50,6 +53,7 @@ app.use((req,res,next)=>{
 })
 //ROUTES
 app.use('/toughts', toughtsRoutes)
+app.use('/', authRoutes)
 app.get('/', ToughtController.showToughts)
 
 connex.sync().then(()=>{
